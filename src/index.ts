@@ -17,3 +17,22 @@ const port = process.env.PORT || 3000
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`)
 })
+
+// Graceful shutdown
+const gracefulShutdown = () => {
+  console.log("Received kill signal, shutting down gracefully.")
+  server.close(() => {
+    console.log("Closed out remaining connections.")
+    process.exit(0)
+  })
+
+  // If after 10 seconds, forcefully shut down
+  setTimeout(() => {
+    console.error("Could not close connections in time, forcefully shutting down")
+    process.exit(1)
+  }, 10000)
+}
+
+// Listen for termination signals
+process.on("SIGTERM", gracefulShutdown)
+process.on("SIGINT", gracefulShutdown)
