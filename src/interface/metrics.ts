@@ -25,12 +25,4 @@ interface IFetchHeaders {
   [key: string]: AxiosHeaders
 }
 
-interface IPrometheusQueryResponse {
-  status: string
-  data: {
-    resultType: string
-    result: any[]
-  }
-}
-
-export { IHardwareMetrics, IFetchHeaders, IPrometheusQueryResponse }
+export { IHardwareMetrics, IFetchHeaders }
