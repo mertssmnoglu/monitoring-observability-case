@@ -1,0 +1,183 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Monitoring Observability API",
+    "description": "API for hardware monitoring and observability case by Mert Sismanoglu",
+    "version": "1.0.0",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/mertssmnoglu/monitoring-observability-case/blob/main/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:{PORT}{API_PATH}",
+      "description": "Local development server",
+      "variables": {
+        "port": {
+          "default": "3000",
+          "description": "Port number",
+          "enum": [
+            "3000",
+            "3001",
+            "3002"
+          ]
+        },
+        "API_PATH": {
+          "default": "/api/v1",
+          "description": "API path",
+          "enum": [
+            "/api/v1",
+            "/api/v2"
+          ]
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "API Base Endpoint",
+        "responses": {
+          "200": {
+            "description": "Hello World!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Hello World!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "summary": "Metrics endpoint",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/text": {
+                "schema": {
+                  "type": "string",
+                  "example": "# HELP http_requests_total The total number of HTTP requests.\n# TYPE http_requests_total counter\nhttp_requests_total{method=\"post\",code=\"200\"} 1027 1395066363000\nhttp_requests_total{method=\"post\",code=\"400\"}    3 1395066363000\n"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/server/data": {
+      "post": {
+        "summary": "Read server data",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServerHardwareDataRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerHardwareDataResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ServerHardwareDataRequestBody": {
+        "type": "object",
+        "properties": {
+          "serverIp": {
+            "type": "string",
+            "example": "127.0.0.1"
+          }
+        }
+      },
+      "ServerHardwareDataResponse": {
+        "type": "object",
+        "properties": {
+          "cpu": {
+            "type": "object",
+            "properties": {
+              "cores": {
+                "type": "integer",
+                "example": 4
+              },
+              "free_in_percent": {
+                "type": "number",
+                "example": 0.5
+              },
+              "usage_in_percent": {
+                "type": "number",
+                "example": 0.5
+              },
+              "temperature": {
+                "type": "number",
+                "example": 50
+              }
+            }
+          },
+          "memory": {
+            "type": "object",
+            "properties": {
+              "total_in_bytes": {
+                "type": "integer",
+                "example": 1024
+              },
+              "free_in_bytes": {
+                "type": "integer",
+                "example": 512
+              },
+              "used_in_bytes": {
+                "type": "integer",
+                "example": 512
+              },
+              "usage_in_percent": {
+                "type": "number",
+                "example": 0.5
+              }
+            }
+          },
+          "disk": {
+            "type": "object",
+            "properties": {
+              "read_speed_in_bytes": {
+                "type": "integer",
+                "example": 1024
+              },
+              "write_speed_in_bytes": {
+                "type": "integer",
+                "example": 1024
+              },
+              "total_in_bytes": {
+                "type": "integer",
+                "example": 1024
+              },
+              "free_in_bytes": {
+                "type": "integer",
+                "example": 512
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
