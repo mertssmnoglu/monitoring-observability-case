@@ -1,0 +1,47 @@
+# https://github.com/grafana/clickhouse-datasource
+apiVersion: 1
+
+datasources:
+  - name: grafana-clickhouse-datasource
+    type: grafana-clickhouse-datasource
+    jsonData:
+      defaultDatabase: default
+      port: 8123
+      host: clickhouse
+      username: test
+      tlsSkipVerify: true # Set to true to skip TLS certificate verification
+      protocol: http
+      # tlsAuth: <bool>
+      # tlsAuthWithCACert: <bool>
+      # secure: <bool>
+      # dialTimeout: <seconds>
+      # queryTimeout: <seconds>
+
+      # defaultTable: <string>
+      # httpHeaders:
+      # - name: X-Example-Header
+      #   secure: false
+      #   value: <string>
+      # - name: Authorization
+      #   secure: true
+      # logs:
+      #   defaultDatabase: <string>
+      #   defaultTable: <string>
+      #   otelEnabled: <bool>
+      #   otelVersion: <string>
+      #   timeColumn: <string>
+      #   ...Column: <string>
+      # traces:
+      #   defaultDatabase: <string>
+      #   defaultTable: <string>
+      #   otelEnabled: <bool>
+      #   otelVersion: <string>
+      #   durationUnit: <seconds|milliseconds|microseconds|nanoseconds>
+      #   traceIdColumn: <string>
+      #   ...Column: <string>
+    secureJsonData:
+      password: 1234 # Credential of the `test` user. You can change it to your own password, or pre-define the user in config/users.xml file.
+      # tlsCACert: <string>
+      # tlsClientCert: <string>
+      # tlsClientKey: <string>
+      # secureHttpHeaders.Authorization: <string>

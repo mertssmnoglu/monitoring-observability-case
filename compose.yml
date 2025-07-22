@@ -28,6 +28,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
     volumes:
       - ./grafana:/etc/grafana/provisioning/
       - ./grafana/dashboards/main.yaml:/etc/grafana/provisioning/dashboards/main.yaml
@@ -81,3 +82,30 @@ services:
       - --config=/etc/otel-collector-config.yaml
     depends_on:
       - prometheus
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    restart: unless-stopped
+    container_name: clickhouse
+    ports:
+      - "19000:9000"
+      - "8123:8123"
+    env_file: ./clickhouse/.env
+    healthcheck:
+      test: ["CMD", "clickhouse-client", "--query", "SELECT 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./clickhouse/config/users.xml:/etc/clickhouse-server/users.d/users.xml:ro
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    networks:
+      - monitoring
+
+volumes:
+  clickhouse_data:
+    name: clickhouse_data

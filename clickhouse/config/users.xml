@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<yandex>
+  <users>
+    <!-- Created a user named 'test' with a password and access settings -->
+    <test>
+      <password>1234</password> <!-- Password for the user, you should change it -->
+      <networks>
+        <ip>::/0</ip> <!-- Allows all IPs -->
+      </networks>
+      <profile>default</profile>
+      <quota>default</quota>
+      <access_management>1</access_management>
+    </test>
+  </users>
+</yandex>
